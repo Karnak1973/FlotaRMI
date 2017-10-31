@@ -35,17 +35,17 @@ public class ClienteFlotaRMI {
 	public static final String SALIR="Salir", NUEVAPARTIDA="Nueva Partida", SOLUCION="Solucion";
 	public static final String PROPON="Proponer partida", BORRA="Borrar partida", LISTA="Listar partidas", ACEPTA="Aceptar partida";
 
-	private GuiTablero guiTablero;			// El juego se encarga de crear y modificar la interfaz grÃ¡fica
-	private static IntServidorPartidasRMI partida = null; 
-	private static IntServidorJuegoRMI serverJuego;// Objeto con los datos de la partida en juego
-	private static ImplCallbackCliente cb;
+	private GuiTablero guiTablero;			
+	private IntServidorPartidasRMI partida = null; 
+	private IntServidorJuegoRMI serverJuego; // Objeto con los datos de la partida en juego
+	private ImplCallbackCliente cb;
 	
 	/** Atributos de la partida guardados en el juego para simplificar su implementaciÃ³n */
 	private int quedan = NUMBARCOS, disparos = 0;
 	private boolean enJuego;
 	
-	private static String nombre;
-	private static Scanner sc;
+	private String nombre;  //Nombre que tendra el jugador
+	private Scanner sc;
 	
 	public static void main (String args[]){
 		ClienteFlotaRMI cliente = new ClienteFlotaRMI();
@@ -54,7 +54,7 @@ public class ClienteFlotaRMI {
 	
 	private void ejecuta(){
 		try{	
-			if (System.getSecurityManager()==null){
+			if (System.getSecurityManager()==null){		//Iniciamos el SecurityManager de Java
 				System.setSecurityManager(new SecurityManager());
 			}
 			
@@ -148,19 +148,19 @@ public class ClienteFlotaRMI {
 			
 			MultijugadorListener listenerMulti = new MultijugadorListener();
 			
-			JMenuItem propon = new JMenuItem(PROPON);
+			JMenuItem propon = new JMenuItem(PROPON); //Se crea el boton Proponer partida
 			propon.setActionCommand(PROPON);
 			propon.addActionListener(listenerMulti);
 			
-			JMenuItem borra = new JMenuItem(BORRA);
+			JMenuItem borra = new JMenuItem(BORRA);	//Se crea el boton borrar partida
 			borra.setActionCommand(BORRA);
 			borra.addActionListener(listenerMulti);
 			
-			JMenuItem lista = new JMenuItem(LISTA);
+			JMenuItem lista = new JMenuItem(LISTA); //Se crea el boton Listar partidas
 			lista.setActionCommand(LISTA);
 			lista.addActionListener(listenerMulti);
 			
-			JMenuItem acepta = new JMenuItem(ACEPTA);
+			JMenuItem acepta = new JMenuItem(ACEPTA);	//Se crea el boton Aceptar partida
 			acepta.setActionCommand(ACEPTA);
 			acepta.addActionListener(listenerMulti);
 			
@@ -432,6 +432,8 @@ public class ClienteFlotaRMI {
 		
 	} //end class EscuchadorVentana
 	
+	//Clase interna para escuchar el menu Multijugador
+
 	private class MultijugadorListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e){
@@ -464,7 +466,7 @@ public class ClienteFlotaRMI {
 				case ACEPTA:
 					System.out.print("Introduce el nombre de partida que quieres aceptar: ");
 					String otro = sc.nextLine();
-					if (otro.equals(nombre)) {
+					if (otro.equals(nombre)) { //Se hace aqui la comprobacion para poder mostrar distintos mensajes.
 						System.out.println("No puedes aceptar tu propia partida.");
 					}else if (serverJuego.aceptaPartida(nombre, otro)) {
 						System.out.println("Has aceptado la partida de "+otro+".");

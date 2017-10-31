@@ -26,7 +26,7 @@ public class ImplServidorJuegoRMI extends UnicastRemoteObject implements IntServ
 	
 	public synchronized boolean proponPartida(String nombreJugador, IntCallbackCliente callbackClientObject) throws RemoteException {
 		// TODO Auto-generated method stub
-		if (mapCallbacks.containsKey(nombreJugador))
+		if (mapCallbacks.containsKey(nombreJugador)) //Si ya tenia propuesta partida devuelve false
 			return false;
 		mapCallbacks.put(nombreJugador, callbackClientObject);
 		return true;
@@ -35,7 +35,7 @@ public class ImplServidorJuegoRMI extends UnicastRemoteObject implements IntServ
 	
 	public synchronized boolean borraPartida(String nombreJugador) throws RemoteException {
 		// TODO Auto-generated method stub
-		if (mapCallbacks.containsKey(nombreJugador)){
+		if (mapCallbacks.containsKey(nombreJugador)){ //Devuelve true si el jugador tenia una partida que borrar
 			mapCallbacks.remove(nombreJugador);
 			return true;
 		}
@@ -56,14 +56,14 @@ public class ImplServidorJuegoRMI extends UnicastRemoteObject implements IntServ
 	
 	public boolean aceptaPartida(String nombreJugador, String nombreRival) throws RemoteException {
 		// TODO Auto-generated method stub
-		if (!mapCallbacks.containsKey(nombreRival))
+		if (!mapCallbacks.containsKey(nombreRival)) //Si el rival no ha propuesto partida devuelve false
 			return false;
 		try{
-			mapCallbacks.get(nombreRival).notificame(nombreJugador);
+			mapCallbacks.get(nombreRival).notificame(nombreJugador); //Intenta hacer callback, si no puede devuelve false
 		}catch(Exception e){
 			return false;
 		}finally {
-			mapCallbacks.remove(nombreRival);
+			mapCallbacks.remove(nombreRival); //Pase lo que pase, se elimina la partida, ya que o se acepta o el jugador no esta activo
 		}
 		return true;
 	}
