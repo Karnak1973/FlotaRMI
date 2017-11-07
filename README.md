@@ -14,4 +14,12 @@ Para ver el funcionamiento, arrancar el servidor y varios clientes (hay que indi
 - Listar partida: lista los jugadores que han propuesto partidas.
 - Aceptar partida: acepta la partida de un jugador. Se empleará el callback para indicar al jugador que propuso la partida que otro jugador la ha aceptado.
 
-Destacar que el modo 'Multijugador' es ficticio, tan solo es para el uso de los callback, no se implementa el que dos jugadores jueguen la partida por turnos.
+Estas últimas acciones se verán reflejadas en servidor y clientes mediante println's.
+
+A destacar:
+
+- El modo 'Multijugador' es ficticio, tan solo es para el uso de los callback, no se implementa el que dos jugadores jueguen la partida por turnos.
+- El uso de metodos synchronized en la implementación Juego, ya que es un objeto compartido por todos los clientes.
+- La solicitud de un nombre en la acción Aceptar partida la realiza la hebra event dispatcher, por lo que la interfaz gráfica se congelará hasta recibir un nombre. Puede solucionarse empleando una hebra auxiliar (daemon), que se encargue de recoger el nombre y el resto de acciones, ya que no se modifica la interfaz gráfica.
+
+
